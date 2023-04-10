@@ -57,6 +57,16 @@ app.post('/tweets', (req, res) => {
     }
 });
 
+app.get('/tweets/:USERNAME', (req, res) => {
+    const {USERNAME} = req.params;
+    const tweetsUser = [];
+    for(let i=0; i<tweets.length; i++){
+        if(tweets[i].username===USERNAME){
+            tweetsUser.push(tweets[i]);
+        }
+    }
+    res.send(tweetsUser);
+});
 const PORT = 5000;
 
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
