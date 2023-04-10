@@ -21,20 +21,27 @@ app.get("/tweets", (req, res) => {
 
 app.post('/sign-up', (req, res) => {
     const {username, avatar} = req.body;
+
+    if(!username || !avatar || (typeof username !== 'string') || (typeof avatar !== 'string')){
+        return res.status(400).send("Todos os campos são obrigatórios!");
+    }
     const newUser={
         username,
         avatar
     }
     users.push(newUser);
-    res.send(console.log("Ok", users));
+    res.status(201).send(console.log("Ok", users));
 });
 
 app.post('/tweets', (req, res) => {
     const {username, tweet} = req.body;
     const user = users.find((u)=> u.username === username);
 
-    if(!user){
-        res.send(console.log("UNAUTHORIZED"));
+    if(!username || !tweet || (typeof username !== 'string') || (typeof tweet !== 'string')){
+        return res.status(400).send("Todos os campos são obrigatórios!");
+    }
+    else if(!user){
+        return res.status(401).send('UNAUTHORIZED');
     }
     else{
         const newTweet = {
@@ -46,7 +53,7 @@ app.post('/tweets', (req, res) => {
             tweets.shift();
         }
         tweets.push(newTweet);
-        res.send(console.log("Ok", tweets));
+        res.status(201).send(console.log("Ok", tweets));
     }
 });
 
